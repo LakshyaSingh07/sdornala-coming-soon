@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://sdornala.in
+
+# Sitemaps
+Sitemap: https://sdornala.in/sitemap.xml

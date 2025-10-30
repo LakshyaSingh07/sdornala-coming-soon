@@ -1,6 +1,4 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  dir: "./app",
-};
+const nextConfig = {};
 
 export default nextConfig;

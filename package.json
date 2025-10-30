@@ -1,17 +1,19 @@
 {
-  "name": "slink-nextjs",
+  "name": "sdornala",
   "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack -p 1234",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postbuild": "next-sitemap"
   },
   "dependencies": {
     "@number-flow/react": "^0.5.8",
     "motion": "^12.5.0",
     "next": "15.2.3",
+    "next-sitemap": "^4.2.3",
     "ogl": "^1.0.11",
     "react": "^19.0.0",
     "react-countdown": "^2.3.6",
