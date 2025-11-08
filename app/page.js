@@ -1,6 +1,7 @@
-"use client"
+"use client";
 
 import { Bodoni_Moda, Gabarito } from "next/font/google";
+import { useForm, ValidationError } from "@formspree/react";
 const bricolageGrotesque = Gabarito({
   weight: "400",
   display: "swap",
@@ -19,6 +20,11 @@ import CountdownTimer from "@/components/CountdownTimer";
 import TextCursorProximity from "@/components/TextCursorProximity";
 
 import "@/styles/demo/demo3.scss";
+
+const [state, handleSubmit] = useForm("mjkjbrbj");
+if (state.succeeded) {
+  return <p>Thanks for joining!</p>;
+}
 
 const Demo3 = () => {
   const backgroundRef = useRef(null);
@@ -46,13 +52,14 @@ const Demo3 = () => {
         if (input) input.focus();
       }, 450);
     }
-  }
+  };
 
   const [about, setAbout] = useState(false);
   const handleAboutButton = (e) => {
     e.preventDefault();
     setAbout((prev) => !prev);
-    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    const scrollbarWidth =
+      window.innerWidth - document.documentElement.clientWidth;
     if (!about) {
       window.scrollTo({ top: 0, behavior: "smooth" });
       document.body.style.overflow = "hidden";
@@ -61,15 +68,15 @@ const Demo3 = () => {
       document.body.style.overflow = "auto";
       document.body.style.paddingRight = "0";
     }
-  }
+  };
 
   // START :: Subscribe button
-  const [buttonState, setButtonState] = useState('idle')
-  const [email, setEmail] = useState("")
-  const [error, setError] = useState("")
+  const [buttonState, setButtonState] = useState("idle");
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
   const isValidEmail = (email) => {
-    return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)
-  }
+    return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);
+  };
 
   const buttonCopy = {
     idle: "Subscribe",
@@ -78,74 +85,109 @@ const Demo3 = () => {
     ),
     success: (
       <motion.div className="text-[var(--primary)] flex items-center gap-2">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 14.5s1.5 0 3.5 3.5c0 0 5.559-9.167 10.5-11" color="currentColor"/></svg>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+        >
+          <path
+            fill="none"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="3"
+            d="M5 14.5s1.5 0 3.5 3.5c0 0 5.559-9.167 10.5-11"
+            color="currentColor"
+          />
+        </svg>
         <span>Done</span>
       </motion.div>
     ),
-  }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (buttonState === "success") return
+    if (buttonState === "success") return;
     if (!isValidEmail(email)) {
-      setError("Please enter a valid email address")
-      return
+      setError("Please enter a valid email address");
+      return;
     }
 
-    setError("")
-    setButtonState("loading")
+    setError("");
+    setButtonState("loading");
 
     setTimeout(() => {
-      setButtonState("success")
-      console.log("Collected Email:", email)
-    }, 1750)
+      setButtonState("success");
+      console.log("Collected Email:", email);
+    }, 1750);
 
     setTimeout(() => {
       // setButtonState("idle")
-      setEmail("")
-    }, 3500)
+      setEmail("");
+    }, 3500);
   };
   // END :: Subscribe button
-  
+
   return (
-    <main className={`main-content-3 ${bricolageGrotesque.className} min-h-screen overflow-hidden`}>
+    <main
+      className={`main-content-3 ${bricolageGrotesque.className} min-h-screen overflow-hidden`}
+    >
       {/* Header */}
       <motion.header
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }} 
+        animate={{ opacity: 1 }}
         transition={{ duration: 0.3, delay: 0.3 }}
         className="pt-6 px-5 sm:px-8 text-sm max-w-full w-[1200px] mx-auto"
       >
         <div className="flex gap-2 lg:gap-16 justify-between items-center">
           <div className="order-2 sm:order-1 sm:w-1/3 ms-auto sm:ms-0 me-3 sm:me-0">
-            <button className="uppercase relative after:absolute after:content-[''] after:w-0 after:h-[1px] after:bg-black after:transition-all after:duration-300 hover:after:w-full after:right-0 hover:after:right-auto hover:after:left-0 after:bottom-0 opacity-100 sm:opacity-75 hover:opacity-100 transition-all duration-300 cursor-pointer" aria-label="About" onClick={handleAboutButton}>About</button>
+            <button
+              className="uppercase relative after:absolute after:content-[''] after:w-0 after:h-[1px] after:bg-black after:transition-all after:duration-300 hover:after:w-full after:right-0 hover:after:right-auto hover:after:left-0 after:bottom-0 opacity-100 sm:opacity-75 hover:opacity-100 transition-all duration-300 cursor-pointer"
+              aria-label="About"
+              onClick={handleAboutButton}
+            >
+              About
+            </button>
           </div>
 
           <div className="order-1 sm:order-2 sm:w-1/3 text-center">
-            <Link className={`block transition-all duration-300 hover:opacity-60 text-lg sm:text-2xl ${bodoniModa.className}`} href="/" aria-label="Logo">
+            <Link
+              className={`block transition-all duration-300 hover:opacity-60 text-lg sm:text-2xl ${bodoniModa.className}`}
+              href="/"
+              aria-label="Logo"
+            >
               Sdornala.
             </Link>
           </div>
 
           <div className="order-3 sm:w-1/3 text-end">
-            <a className="uppercase relative after:absolute after:content-[''] after:w-0 after:h-[1px] after:bg-black after:transition-all after:duration-300 hover:after:w-full after:right-0 hover:after:right-auto hover:after:left-0 after:bottom-0 opacity-100 sm:opacity-75 hover:opacity-100 transition-all duration-300" href="#subscribe" aria-label="Subscribe" onClick={handleSubscribeButton}>Subscribe</a>
+            <a
+              className="uppercase relative after:absolute after:content-[''] after:w-0 after:h-[1px] after:bg-black after:transition-all after:duration-300 hover:after:w-full after:right-0 hover:after:right-auto hover:after:left-0 after:bottom-0 opacity-100 sm:opacity-75 hover:opacity-100 transition-all duration-300"
+              href="#subscribe"
+              aria-label="Subscribe"
+              onClick={handleSubscribeButton}
+            >
+              Subscribe
+            </a>
           </div>
         </div>
       </motion.header>
-      
+
       {/* main content */}
       <section
         className="pt-[15dvh] px-3 sm:px-8 flex-1 transition-all duration-200"
         style={about ? { transform: "scale(1) translateY(20%)" } : {}}
       >
-
         {/* Content */}
-        <section className="text-center mb-8 w-fit mx-auto no-transform-mobile" ref={textContainerRef}>
-
+        <section
+          className="text-center mb-8 w-fit mx-auto no-transform-mobile"
+          ref={textContainerRef}
+        >
           <motion.div
             initial={{ opacity: 0, translateY: 20 }}
-            animate={{ opacity: 1, translateY: 0 }} 
+            animate={{ opacity: 1, translateY: 0 }}
             transition={{ duration: 0.3 }}
           >
             <TextCursorProximity
@@ -166,7 +208,7 @@ const Demo3 = () => {
 
           <motion.div
             initial={{ opacity: 0, translateY: 20 }}
-            animate={{ opacity: 1, translateY: 0 }} 
+            animate={{ opacity: 1, translateY: 0 }}
             transition={{ duration: 0.3, delay: 0.1 }}
           >
             <TextCursorProximity
@@ -187,7 +229,7 @@ const Demo3 = () => {
 
           <motion.div
             initial={{ opacity: 0, translateY: 20 }}
-            animate={{ opacity: 1, translateY: 0 }} 
+            animate={{ opacity: 1, translateY: 0 }}
             transition={{ duration: 0.3, delay: 0.2 }}
           >
             <TextCursorProximity
@@ -209,13 +251,12 @@ const Demo3 = () => {
 
         <motion.div
           initial={{ opacity: 0, translateY: 20 }}
-          animate={{ opacity: 1, translateY: 0 }} 
+          animate={{ opacity: 1, translateY: 0 }}
           transition={{ duration: 0.3, delay: 0.3 }}
-          className="max-w-full w-[1160px] mx-auto bg-[url('/demo-3/bg.jpg')] bg-cover bg-top text-white rounded-2xl"
+          className="max-w-full w-[1160px] mx-auto bg-[url('https://images.pexels.com/photos/33896531/pexels-photo-33896531.jpeg')] bg-cover bg-top text-white rounded-2xl"
           ref={backgroundRef}
         >
           <div className="pt-10 pb-6 px-6 sm:p-16 text-center bg-dark/20">
-
             <div className="text-4xl md:text-6xl flex gap-3 sm:gap-5 mb-6 sm:mb-12 justify-center min-h-[56px] md:min-h-[90px] lg:min-h-24">
               <CountdownTimer date={`2026-01-23T00:30:00`} />
             </div>
@@ -224,9 +265,18 @@ const Demo3 = () => {
               <div className="animate-scroll-down relative w-px h-full bg-white"></div>
             </div>
 
-            <p className="sm:text-2xl mb-6 sm:mb-8 leading-snug max-w-[450px] mx-auto text-balance tracking-wide">Join our newsletter to be the first to know when Sdornala launches.</p>
+            <p className="sm:text-2xl mb-6 sm:mb-8 leading-snug max-w-[450px] mx-auto text-balance tracking-wide">
+              Join our newsletter to be the first to know when Sdornala
+              launches.
+            </p>
 
-            <form ref={subscribeRef} onSubmit={handleSubmit} className="max-w-96 mx-auto border-2 border-transparent focus-within:border-[var(--primary)] rounded-[10px] group transition duration-200 shadow-2xl">
+            <form
+              action={"https://formspree.io/f/mjkjbrbj"}
+              ref={subscribeRef}
+              onSubmit={handleSubmit}
+              method="POST"
+              className="max-w-96 mx-auto border-2 border-transparent focus-within:border-[var(--primary)] rounded-[10px] group transition duration-200 shadow-2xl"
+            >
               <div className="flex items-center">
                 <input
                   className="peer text-sm sm:text-base bg-white text-black block w-full h-12 ps-4 focus:outline-none focus:bg-white focus:text-black transition duration-200 focus:placeholder:text-black/50 rounded-s-lg"
@@ -266,14 +316,47 @@ const Demo3 = () => {
         {/* footer */}
         <footer className="py-8">
           <div className="text-[15px] flex flex-wrap gap-x-4 md:gap-8 ms-auto justify-center items-center mb-4">
-            <Link className="relative after:absolute after:content-[''] after:w-0 after:h-[1px] after:bg-black after:transition-all after:duration-300 hover:after:w-full after:right-0 hover:after:right-auto hover:after:left-0 after:bottom-0 opacity-50 hover:opacity-100 transition-all duration-300" href="#!" aria-label="X/Twitter">X/Twitter</Link>
-            <Link className="relative after:absolute after:content-[''] after:w-0 after:h-[1px] after:bg-black after:transition-all after:duration-300 hover:after:w-full after:right-0 hover:after:right-auto hover:after:left-0 after:bottom-0 opacity-50 hover:opacity-100 transition-all duration-300" href="#!" aria-label="Facebook">Facebook</Link>
-            <Link className="relative after:absolute after:content-[''] after:w-0 after:h-[1px] after:bg-black after:transition-all after:duration-300 hover:after:w-full after:right-0 hover:after:right-auto hover:after:left-0 after:bottom-0 opacity-50 hover:opacity-100 transition-all duration-300" href="https://instagram.com/sdornala.in" aria-label="Instagram">Instagram</Link>
-            <Link className="relative after:absolute after:content-[''] after:w-0 after:h-[1px] after:bg-black after:transition-all after:duration-300 hover:after:w-full after:right-0 hover:after:right-auto hover:after:left-0 after:bottom-0 opacity-50 hover:opacity-100 transition-all duration-300" href="https://linkedin.com/in/lakshyac99" aria-label="LinkedIn">LinkedIn</Link>
+            <Link
+              className="relative after:absolute after:content-[''] after:w-0 after:h-[1px] after:bg-black after:transition-all after:duration-300 hover:after:w-full after:right-0 hover:after:right-auto hover:after:left-0 after:bottom-0 opacity-50 hover:opacity-100 transition-all duration-300"
+              href="#!"
+              aria-label="X/Twitter"
+            >
+              X/Twitter
+            </Link>
+            <Link
+              className="relative after:absolute after:content-[''] after:w-0 after:h-[1px] after:bg-black after:transition-all after:duration-300 hover:after:w-full after:right-0 hover:after:right-auto hover:after:left-0 after:bottom-0 opacity-50 hover:opacity-100 transition-all duration-300"
+              href="#!"
+              aria-label="Facebook"
+            >
+              Facebook
+            </Link>
+            <Link
+              className="relative after:absolute after:content-[''] after:w-0 after:h-[1px] after:bg-black after:transition-all after:duration-300 hover:after:w-full after:right-0 hover:after:right-auto hover:after:left-0 after:bottom-0 opacity-50 hover:opacity-100 transition-all duration-300"
+              href="https://instagram.com/sdornala.in"
+              aria-label="Instagram"
+            >
+              Instagram
+            </Link>
+            <Link
+              className="relative after:absolute after:content-[''] after:w-0 after:h-[1px] after:bg-black after:transition-all after:duration-300 hover:after:w-full after:right-0 hover:after:right-auto hover:after:left-0 after:bottom-0 opacity-50 hover:opacity-100 transition-all duration-300"
+              href="https://linkedin.com/in/lakshyac99"
+              aria-label="LinkedIn"
+            >
+              LinkedIn
+            </Link>
           </div>
 
           <div className="text-center">
-            <span className="text-sm text-balance inline-block">&copy; {new Date().getFullYear()} by Sdornala — Developed by <Link className="relative after:absolute after:content-[''] after:w-full after:h-[1px] after:bg-black after:transition-all after:duration-300 hover:after:w-0 after:left-0 hover:after:left-auto hover:after:right-0 after:bottom-0" href="https://lakshyasingh.com" aria-label="Slink">Lakshya Singh</Link></span>
+            <span className="text-sm text-balance inline-block">
+              &copy; {new Date().getFullYear()} by Sdornala — Developed by{" "}
+              <Link
+                className="relative after:absolute after:content-[''] after:w-full after:h-[1px] after:bg-black after:transition-all after:duration-300 hover:after:w-0 after:left-0 hover:after:left-auto hover:after:right-0 after:bottom-0"
+                href="https://lakshyasingh.com"
+                aria-label="Slink"
+              >
+                Lakshya Singh
+              </Link>
+            </span>
           </div>
         </footer>
       </section>
@@ -300,11 +383,33 @@ const Demo3 = () => {
       </svg>
 
       {/* about content */}
-      <section className="fixed inset-0 h-screen w-screen overflow-y-scroll bg-white/90 backdrop-blur-xl z-[9999] opacity-0 invisible transition-all duration-200" style={about ? { opacity: 1, visibility: "visible" } : {}}>
-
+      <section
+        className="fixed inset-0 h-screen w-screen overflow-y-scroll bg-white/90 backdrop-blur-xl z-[9999] opacity-0 invisible transition-all duration-200"
+        style={about ? { opacity: 1, visibility: "visible" } : {}}
+      >
         {/* close button */}
-        <button type="button" onClick={handleAboutButton} className="cursor-pointer block fixed top-6 right-4 transition duration-200 hover:opacity-40 p-3 bg-white z-50" aria-label="Close About">
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 5L5 19M5 5l14 14" color="currentColor"/></svg>
+        <button
+          type="button"
+          onClick={handleAboutButton}
+          className="cursor-pointer block fixed top-6 right-4 transition duration-200 hover:opacity-40 p-3 bg-white z-50"
+          aria-label="Close About"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="1.5"
+              d="M19 5L5 19M5 5l14 14"
+              color="currentColor"
+            />
+          </svg>
         </button>
 
         <div className="relative mx-auto w-full max-w-[600px] py-16 sm:py-20 px-6 sm:px-8">
@@ -314,22 +419,33 @@ const Demo3 = () => {
           </p>
 
           <p className="text-black/75 leading-7 md:leading-8">
-            At Sdornala, we are committed to Shaping the Future of Development. Our mission is to drive innovation, efficiency, and excellence in every project we undertake. Whether it is cutting-edge software solutions, groundbreaking technology advancements, or scalable business strategies, we empower organizations to thrive in an ever-evolving digital landscape.
-            <br /><br />
-            With a team of passionate experts, we blend creativity with technology to deliver solutions that not only meet today’s needs but also anticipate tomorrow’s challenges. Collaboration, innovation, and a future-focused mindset are at the core of everything we do.
-            
-            <br /><br />
+            At Sdornala, we are committed to Shaping the Future of Development.
+            Our mission is to drive innovation, efficiency, and excellence in
+            every project we undertake. Whether it is cutting-edge software
+            solutions, groundbreaking technology advancements, or scalable
+            business strategies, we empower organizations to thrive in an
+            ever-evolving digital landscape.
+            <br />
+            <br />
+            With a team of passionate experts, we blend creativity with
+            technology to deliver solutions that not only meet today’s needs but
+            also anticipate tomorrow’s challenges. Collaboration, innovation,
+            and a future-focused mindset are at the core of everything we do.
+            <br />
+            <br />
             Join us as we build the future—one development at a time.
           </p>
 
           <div className="mt-10">
-            <p className={`${bodoniModa.className} text-black text-lg`}>Sdornala</p>
+            <p className={`${bodoniModa.className} text-black text-lg`}>
+              Sdornala
+            </p>
             <p className="mt-1 text-black/50">Perfectly aligned</p>
           </div>
         </div>
       </section>
     </main>
   );
-}
+};
 
 export default Demo3;
