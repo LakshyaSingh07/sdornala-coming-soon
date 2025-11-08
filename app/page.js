@@ -21,10 +21,10 @@ import TextCursorProximity from "@/components/TextCursorProximity";
 
 import "@/styles/demo/demo3.scss";
 
-const [state, handleSubmit] = useForm("mjkjbrbj");
-if (state.succeeded) {
-  return <p>Thanks for joining!</p>;
-}
+// const [state, handleSubmit] = useForm("mjkjbrbj");
+// if (state.succeeded) {
+//   return <p>Thanks for joining!</p>;
+// }
 
 const Demo3 = () => {
   const backgroundRef = useRef(null);
@@ -78,6 +78,8 @@ const Demo3 = () => {
     return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);
   };
 
+  const [state, handleSubmit] = useForm("mjkjbrbj");
+
   const buttonCopy = {
     idle: "Subscribe",
     loading: (
@@ -106,28 +108,28 @@ const Demo3 = () => {
     ),
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
 
-    if (buttonState === "success") return;
-    if (!isValidEmail(email)) {
-      setError("Please enter a valid email address");
-      return;
-    }
+  //   if (buttonState === "success") return;
+  //   if (!isValidEmail(email)) {
+  //     setError("Please enter a valid email address");
+  //     return;
+  //   }
 
-    setError("");
-    setButtonState("loading");
+  //   setError("");
+  //   setButtonState("loading");
 
-    setTimeout(() => {
-      setButtonState("success");
-      console.log("Collected Email:", email);
-    }, 1750);
+  //   setTimeout(() => {
+  //     setButtonState("success");
+  //     console.log("Collected Email:", email);
+  //   }, 1750);
 
-    setTimeout(() => {
-      // setButtonState("idle")
-      setEmail("");
-    }, 3500);
-  };
+  //   setTimeout(() => {
+  //     // setButtonState("idle")
+  //     setEmail("");
+  //   }, 3500);
+  // };
   // END :: Subscribe button
 
   return (
@@ -271,10 +273,8 @@ const Demo3 = () => {
             </p>
 
             <form
-              action={"https://formspree.io/f/mjkjbrbj"}
               ref={subscribeRef}
               onSubmit={handleSubmit}
-              method="POST"
               className="max-w-96 mx-auto border-2 border-transparent focus-within:border-[var(--primary)] rounded-[10px] group transition duration-200 shadow-2xl"
             >
               <div className="flex items-center">
