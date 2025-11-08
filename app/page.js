@@ -2,6 +2,14 @@
 
 import { Bodoni_Moda, Gabarito } from "next/font/google";
 import { useForm, ValidationError } from "@formspree/react";
+import { AnimatePresence, motion } from "motion/react";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+import CountdownTimer from "@/components/CountdownTimer";
+import TextCursorProximity from "@/components/TextCursorProximity";
+
+import "@/styles/demo/demo3.scss";
+
 const bricolageGrotesque = Gabarito({
   weight: "400",
   display: "swap",
@@ -12,19 +20,6 @@ const bodoniModa = Bodoni_Moda({
   display: "swap",
   subsets: ["latin"],
 });
-
-import { AnimatePresence, motion } from "motion/react";
-import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-import CountdownTimer from "@/components/CountdownTimer";
-import TextCursorProximity from "@/components/TextCursorProximity";
-
-import "@/styles/demo/demo3.scss";
-
-// const [state, handleSubmit] = useForm("mjkjbrbj");
-// if (state.succeeded) {
-//   return <p>Thanks for joining!</p>;
-// }
 
 const Demo3 = () => {
   const backgroundRef = useRef(null);
@@ -70,15 +65,16 @@ const Demo3 = () => {
     }
   };
 
-  // START :: Subscribe button
+  // ✅ Formspree integration
+  const [state, handleSubmit] = useForm("mjkjbrbj");
+
+  // START :: Subscribe button logic
   const [buttonState, setButtonState] = useState("idle");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const isValidEmail = (email) => {
     return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);
   };
-
-  const [state, handleSubmit] = useForm("mjkjbrbj");
 
   const buttonCopy = {
     idle: "Subscribe",
@@ -108,28 +104,36 @@ const Demo3 = () => {
     ),
   };
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
+  // ✅ Updated submit logic with Formspree connection
+  const handleLocalSubmit = async (e) => {
+    e.preventDefault();
 
-  //   if (buttonState === "success") return;
-  //   if (!isValidEmail(email)) {
-  //     setError("Please enter a valid email address");
-  //     return;
-  //   }
+    if (buttonState === "success") return;
+    if (!isValidEmail(email)) {
+      setError("Please enter a valid email address");
+      return;
+    }
 
-  //   setError("");
-  //   setButtonState("loading");
+    setError("");
+    setButtonState("loading");
 
-  //   setTimeout(() => {
-  //     setButtonState("success");
-  //     console.log("Collected Email:", email);
-  //   }, 1750);
+    // Submit to Formspree
+    await handleSubmit(e);
 
-  //   setTimeout(() => {
-  //     // setButtonState("idle")
-  //     setEmail("");
-  //   }, 3500);
-  // };
+    // Wait and update UI
+    setTimeout(() => {
+      if (state.succeeded) {
+        setButtonState("success");
+        console.log("Collected Email:", email);
+      } else {
+        setButtonState("idle");
+      }
+    }, 1750);
+
+    setTimeout(() => {
+      setEmail("");
+    }, 3500);
+  };
   // END :: Subscribe button
 
   return (
@@ -251,6 +255,7 @@ const Demo3 = () => {
           </motion.div>
         </section>
 
+        {/* subscribe form */}
         <motion.div
           initial={{ opacity: 0, translateY: 20 }}
           animate={{ opacity: 1, translateY: 0 }}
@@ -272,9 +277,14 @@ const Demo3 = () => {
               launches.
             </p>
 
+            {state.succeeded && (
+              <p className="text-white text-sm mb-4">✅ Thanks for subscribing!</p>
+            )}
+
             <form
               ref={subscribeRef}
-              onSubmit={handleSubmit}
+              onSubmit={handleLocalSubmit}
+              method="POST"
               className="max-w-96 mx-auto border-2 border-transparent focus-within:border-[var(--primary)] rounded-[10px] group transition duration-200 shadow-2xl"
             >
               <div className="flex items-center">
@@ -286,6 +296,7 @@ const Demo3 = () => {
                   placeholder="eg: alex@email.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  required
                 />
 
                 <button
@@ -308,40 +319,31 @@ const Demo3 = () => {
                   </AnimatePresence>
                 </button>
               </div>
+
+              <ValidationError
+                prefix="Email"
+                field="email"
+                errors={state.errors}
+                className="text-white text-xs mt-2"
+              />
+              {error && <p className="text-white text-xs mt-2">{error}</p>}
             </form>
-            {error && <p className="text-white text-xs mt-2">{error}</p>}
           </div>
         </motion.div>
 
         {/* footer */}
         <footer className="py-8">
           <div className="text-[15px] flex flex-wrap gap-x-4 md:gap-8 ms-auto justify-center items-center mb-4">
-            <Link
-              className="relative after:absolute after:content-[''] after:w-0 after:h-[1px] after:bg-black after:transition-all after:duration-300 hover:after:w-full after:right-0 hover:after:right-auto hover:after:left-0 after:bottom-0 opacity-50 hover:opacity-100 transition-all duration-300"
-              href="#!"
-              aria-label="X/Twitter"
-            >
+            <Link href="#!" aria-label="X/Twitter">
               X/Twitter
             </Link>
-            <Link
-              className="relative after:absolute after:content-[''] after:w-0 after:h-[1px] after:bg-black after:transition-all after:duration-300 hover:after:w-full after:right-0 hover:after:right-auto hover:after:left-0 after:bottom-0 opacity-50 hover:opacity-100 transition-all duration-300"
-              href="#!"
-              aria-label="Facebook"
-            >
+            <Link href="#!" aria-label="Facebook">
               Facebook
             </Link>
-            <Link
-              className="relative after:absolute after:content-[''] after:w-0 after:h-[1px] after:bg-black after:transition-all after:duration-300 hover:after:w-full after:right-0 hover:after:right-auto hover:after:left-0 after:bottom-0 opacity-50 hover:opacity-100 transition-all duration-300"
-              href="https://instagram.com/sdornala.in"
-              aria-label="Instagram"
-            >
+            <Link href="https://instagram.com/sdornala.in" aria-label="Instagram">
               Instagram
             </Link>
-            <Link
-              className="relative after:absolute after:content-[''] after:w-0 after:h-[1px] after:bg-black after:transition-all after:duration-300 hover:after:w-full after:right-0 hover:after:right-auto hover:after:left-0 after:bottom-0 opacity-50 hover:opacity-100 transition-all duration-300"
-              href="https://linkedin.com/in/lakshyac99"
-              aria-label="LinkedIn"
-            >
+            <Link href="https://linkedin.com/in/lakshyac99" aria-label="LinkedIn">
               LinkedIn
             </Link>
           </div>
@@ -349,100 +351,12 @@ const Demo3 = () => {
           <div className="text-center">
             <span className="text-sm text-balance inline-block">
               &copy; {new Date().getFullYear()} by Sdornala — Developed by{" "}
-              <Link
-                className="relative after:absolute after:content-[''] after:w-full after:h-[1px] after:bg-black after:transition-all after:duration-300 hover:after:w-0 after:left-0 hover:after:left-auto hover:after:right-0 after:bottom-0"
-                href="https://lakshyasingh.com"
-                aria-label="Slink"
-              >
+              <Link href="https://lakshyasingh.com" aria-label="Slink">
                 Lakshya Singh
               </Link>
             </span>
           </div>
         </footer>
-      </section>
-
-      <svg height="0" className="hidden">
-        <filter id="ripples" x="0" y="0" width="100%" height="100%">
-          <feTurbulence
-            type="turbulence"
-            id="ripple-turbulence"
-            numOctaves="1"
-            seed="0.1"
-            baseFrequency="0.02 0.05"
-          ></feTurbulence>
-          <feDisplacementMap scale="10" in="SourceGraphic"></feDisplacementMap>
-          <animate
-            href="#ripple-turbulence"
-            attributeName="baseFrequency"
-            dur="75s"
-            keyTimes="0;0.5;1"
-            values="0.02 0.03; 0.04 0.04; 0.02 0.03"
-            repeatCount="indefinite"
-          ></animate>
-        </filter>
-      </svg>
-
-      {/* about content */}
-      <section
-        className="fixed inset-0 h-screen w-screen overflow-y-scroll bg-white/90 backdrop-blur-xl z-[9999] opacity-0 invisible transition-all duration-200"
-        style={about ? { opacity: 1, visibility: "visible" } : {}}
-      >
-        {/* close button */}
-        <button
-          type="button"
-          onClick={handleAboutButton}
-          className="cursor-pointer block fixed top-6 right-4 transition duration-200 hover:opacity-40 p-3 bg-white z-50"
-          aria-label="Close About"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="22"
-            height="22"
-            viewBox="0 0 24 24"
-          >
-            <path
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="1.5"
-              d="M19 5L5 19M5 5l14 14"
-              color="currentColor"
-            />
-          </svg>
-        </button>
-
-        <div className="relative mx-auto w-full max-w-[600px] py-16 sm:py-20 px-6 sm:px-8">
-          <p className="text-black/50">Who are we?</p>
-          <p className="text-4xl md:text-5xl font-bold -tracking-[0.01em] mt-6 leading-[1.2] mb-14">
-            Shaping the future of development.
-          </p>
-
-          <p className="text-black/75 leading-7 md:leading-8">
-            At Sdornala, we are committed to Shaping the Future of Development.
-            Our mission is to drive innovation, efficiency, and excellence in
-            every project we undertake. Whether it is cutting-edge software
-            solutions, groundbreaking technology advancements, or scalable
-            business strategies, we empower organizations to thrive in an
-            ever-evolving digital landscape.
-            <br />
-            <br />
-            With a team of passionate experts, we blend creativity with
-            technology to deliver solutions that not only meet today’s needs but
-            also anticipate tomorrow’s challenges. Collaboration, innovation,
-            and a future-focused mindset are at the core of everything we do.
-            <br />
-            <br />
-            Join us as we build the future—one development at a time.
-          </p>
-
-          <div className="mt-10">
-            <p className={`${bodoniModa.className} text-black text-lg`}>
-              Sdornala
-            </p>
-            <p className="mt-1 text-black/50">Perfectly aligned</p>
-          </div>
-        </div>
       </section>
     </main>
   );
